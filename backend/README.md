@@ -1,100 +1,58 @@
-# NLW Agents
+# Backend - NLW Agents
 
-Projeto desenvolvido durante um evento da **Rocketseat** utilizando tecnologias modernas para criação de uma API robusta e eficiente.
+Este é o backend do projeto NLW Agents, uma API RESTful responsável por gerenciar as salas, o upload e transcrição de áudios, e a interação com a IA para responder perguntas.
 
 ## 🚀 Tecnologias
 
-- **Node.js** com TypeScript nativo (experimental strip types)
-- **Fastify** - Framework web rápido e eficiente
-- **PostgreSQL** com extensão **pgvector** para vetores
-- **Drizzle ORM** - Type-safe database operations
-- **Zod** - Schema validation
-- **Docker** - Containerização do banco de dados
-- **Biome** - Linting e formatação de código
+- **Node.js** com TypeScript
+- **Fastify** - Framework web rápido e de baixo overhead
+- **PostgreSQL** com extensão **pgvector** para operações com vetores
+- **Drizzle ORM** - ORM type-safe para interações com o banco de dados
+- **Zod** - Validação de schemas e tipos
+- **Docker** - Para containerização do ambiente de banco de dados
 
-## 🏗️ Arquitetura
+## 🌐 Endpoints da API
 
-O projeto segue uma arquitetura modular com:
-
-- **Separação de responsabilidades** entre rotas, schemas e conexão com banco
-- **Validação de schemas** com Zod para type safety
-- **ORM type-safe** com Drizzle para operações de banco de dados
-- **Validação de variáveis de ambiente** centralizadas
+- `POST /rooms`: Cria uma nova sala.
+- `GET /rooms`: Lista todas as salas disponíveis.
+- `POST /rooms/:roomId/audio`: Faz o upload de um áudio para uma sala específica, que é então transcrito.
+- `POST /rooms/:roomId/questions`: Cria uma nova pergunta em uma sala, que será respondida pela IA.
+- `GET /rooms/:roomId/questions`: Lista todas as perguntas e respostas de uma sala.
 
 ## ⚙️ Setup e Configuração
 
 ### Pré-requisitos
 
-- Node.js (versão com suporte a `--experimental-strip-types`)
+- Node.js
 - Docker e Docker Compose
+- pnpm (ou outro gerenciador de pacotes)
 
-### 1. Clone o repositório
+### Passos
 
-```bash
-git clone <url-do-repositorio>
-cd server
-```
+1.  Instale as dependências:
+    ```bash
+    pnpm install
+    ```
+2.  Inicie o container do banco de dados:
+    ```bash
+    docker-compose up -d
+    ```
+3.  Crie um arquivo `.env` a partir do `.env.example` e preencha as variáveis de ambiente, incluindo a `DATABASE_URL`.
+4.  Execute as migrações do banco de dados:
+    ```bash
+    pnpm drizzle-kit migrate
+    ```
+5.  (Opcional) Popule o banco com dados de exemplo:
+    ```bash
+    pnpm run db:seed
+    ```
+6.  Inicie o servidor em modo de desenvolvimento:
+    ```bash
+    pnpm run dev
+    ```
 
-### 2. Configure o banco de dados
-
-```bash
-docker-compose up -d
-```
-
-### 3. Configure as variáveis de ambiente
-
-Crie um arquivo `.env` na raiz do projeto:
-
-```env
-PORT=3333
-DATABASE_URL=postgresql://docker:docker@localhost:5432/agents
-```
-
-### 4. Instale as dependências
-
-```bash
-npm install
-```
-
-### 5. Execute as migrações do banco
-
-```bash
-npx drizzle-kit migrate
-```
-
-### 6. (Opcional) Popule o banco com dados de exemplo
-
-```bash
-npm run db:seed
-```
-
-### 7. Execute o projeto
-
-**Desenvolvimento:**
-
-```bash
-npm run dev
-```
-
-**Produção:**
-
-```bash
-npm start
-```
-
-## 📚 Scripts Disponíveis
-
-- `npm run dev` - Executa o servidor em modo de desenvolvimento com hot reload
-- `npm start` - Executa o servidor em modo de produção
-- `npm run db:seed` - Popula o banco de dados com dados de exemplo
-
-## 🌐 Endpoints
-
-A API estará disponível em `http://localhost:3333`
-
-- `GET /health` - Health check da aplicação
-- `GET /rooms` - Lista as salas disponíveis
+O servidor estará rodando em `http://localhost:3333`.
 
 ---
 
-Desenvolvido com ❤️ durante o NLW da Rocketseat
+Desenvolvido com ❤️ durante o NLW da Rocketseat.
